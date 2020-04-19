@@ -20,11 +20,21 @@ def proof_of_work(last_proof):
     - Use the same method to generate SHA-256 hashes as the examples in class
     """
 
+    #Simple Proof of Work Algorithm Stringify 
+    # the block and look for a proof. 
+    # Loop through possibilities, checking each one against
+    #  `valid_proof`in an effort to find a number that 
+    # is a valid proo:return: A valid proof for the provided block
+
     start = timer()
 
     print("Searching for next proof")
     proof = 0
-    #  TODO: Your code here
+   
+   #hash the last_proof in string using encode and changed the encode to hexidigest to make radable
+    last_hash = hashlib.sha256(f'{last_proof}'.encode()).hexdigest()
+    while valid_proof(last_hash, proof) is False:
+        proof += 1
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
@@ -38,9 +48,13 @@ def valid_proof(last_hash, proof):
 
     IE:  last_hash: ...AE9123456, new hash 123456E88...
     """
-
-    # TODO: Your code here!
-    pass
+    #encode the proof into string
+    guess = f'{proof}'.encode()
+    #hash the string into hexdigest so we can readable
+    hash_guess = hashlib.sha256(guess).hexdigest()
+    #matches last_hash  6 character to first_hash of 6 character
+    return hash_guess[:6] == last_hash[-6:]
+    
 
 
 if __name__ == '__main__':
